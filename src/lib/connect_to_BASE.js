@@ -3,7 +3,7 @@ export async function get_data(Tag1, Tag2 = "INFO") {
     let MSG = {subject: "INFO", queryParam:Tag2, tag: Tag1};
 
     try {
-        let url = new URL("http://localhost:9001/erl/http_session_gen_server/fetchdata");
+        let url = new URL("https://d5d9-102-182-74-10.ngrok.io/erl/http_session_gen_server/fetchdata");
         url.searchParams.append("MSG", JSON.stringify(MSG));
         const response = await fetch(url);
         if (response.ok) {
