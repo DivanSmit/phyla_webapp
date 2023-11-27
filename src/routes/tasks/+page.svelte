@@ -80,7 +80,7 @@
 
 <div class="start-container">
     <a href="#" class="button start-button" on:click={() =>spawnTaskRequest(moveFruitSpawnTag)}>Move Fruit</a>
-    <a href="#" class="button start-button" on:click={() =>spawnTaskRequest(fseSpawnTag, unixTimestamp)}>Start FSE</a>
+    <a href="#" class="button start-button" on:click={() =>spawnTaskRequest(fseSpawnTag, unixTimestamp)}>Start FSE task</a>
 </div>
 <div class="start-container">
     <h1 class="header">Select Date and Time</h1>
