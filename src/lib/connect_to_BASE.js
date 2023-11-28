@@ -6,7 +6,7 @@ export async function get_data(Tag1, Tag2 = "INFO") {
     let MSG = {subject: "INFO", queryParam:Tag2, tag: Tag1};
 
     try {
-        let url = new URL("https://grown-goose-completely.ngrok-free.app/erl/http_session_gen_server/fetchdata");
+        let url = new URL("https://grown-goose-completely.ngrok-free.app /erl/http_session_gen_server/fetchdata");
         url.searchParams.append("MSG", JSON.stringify(MSG));
         const response = await fetch(url);
         if (response.ok) {
