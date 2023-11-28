@@ -1,4 +1,4 @@
-let ngrok = "https://6ec9-https://grown-goose-completely.ngrok-free.app-182-74-10.ngrok.io"+"/erl/http_session_gen_server/fetchdata";
+let ngrok = "https://6ec9-https://grown-goose-completely.ngrok-free.app-182-74-10.ngrok.io/erl/http_session_gen_server/fetchdata";
 // let ngrok = "http://localhost:9001"+"/erl/http_session_gen_server/fetchdata";
 
 export async function get_data(Tag1, Tag2 = "INFO") {
@@ -6,7 +6,7 @@ export async function get_data(Tag1, Tag2 = "INFO") {
     let MSG = {subject: "INFO", queryParam:Tag2, tag: Tag1};
 
     try {
-        let url = new URL(ngrok);
+        let url = new URL("https://6ec9-https://grown-goose-completely.ngrok-free.app-182-74-10.ngrok.io/erl/http_session_gen_server/fetchdata");
         url.searchParams.append("MSG", JSON.stringify(MSG));
         const response = await fetch(url);
         if (response.ok) {
@@ -27,7 +27,7 @@ export async function spawnInstance(Tag, Param) {
     let MSG = {subject: "SPAWN", queryParam:"SPAWN", tag: Tag, param: Param};
 
     try {
-        let url = new URL(ngrok);
+        let url = new URL("https://6ec9-https://grown-goose-completely.ngrok-free.app-182-74-10.ngrok.io/erl/http_session_gen_server/fetchdata");
         url.searchParams.append("MSG", JSON.stringify(MSG));
         const response = await fetch(url);
         if (response.ok) {
@@ -48,7 +48,7 @@ export async function userInteraction(User, Param, ID = '') {
     let MSG = {subject: "USERInteract", user: User, param: Param, tag: "TASKS", taskID: ID};
 
     try {
-        let url = new URL(ngrok);
+        let url = new URL("https://6ec9-https://grown-goose-completely.ngrok-free.app-182-74-10.ngrok.io/erl/http_session_gen_server/fetchdata");
         url.searchParams.append("MSG", JSON.stringify(MSG));
         const response = await fetch(url);
         if (response.ok) {
@@ -69,7 +69,7 @@ export async function getuserData(User, Param) {
     let MSG = {subject: "UserData", user: User, param: Param, tag: "INFO"};
 
     try {
-        let url = new URL(ngrok);
+        let url = new URL("https://6ec9-https://grown-goose-completely.ngrok-free.app-182-74-10.ngrok.io/erl/http_session_gen_server/fetchdata");
         url.searchParams.append("MSG", JSON.stringify(MSG));
         const response = await fetch(url);
         if (response.ok) {
