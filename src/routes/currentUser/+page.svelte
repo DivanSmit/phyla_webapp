@@ -29,7 +29,9 @@
     const getTaskData = async ()=>{
         taskData = await getuserData(username,"TASKSID");
         console.log(taskData)
+        // @ts-ignore
         taskIDs = taskData[0].id;
+        // @ts-ignore
         taskTime = taskData[0].time;
     }
 
@@ -46,7 +48,7 @@
     }
 
     .form {
-        background-color: #30b635;
+        background-color: #91ce41;
         border: 1px;
         border-color: #000;
         border-radius: 8px;
@@ -65,7 +67,8 @@
 
     .button-login {
         background-color: #007BFF;
-        color: #fff;
+        color: #000000;
+        border: 1px solid black;
         padding: 10px 20px;
         border: none;
         border-radius: 4px;
