@@ -1,6 +1,7 @@
 <script>
     import {spawnInstance} from "$lib/connect_to_BASE.js";
     import { createEventDispatcher } from 'svelte';
+    import {generateInput} from "$lib/supplementary_functions.js";
 
     let response = [];
     let inputData = {
@@ -52,6 +53,10 @@
         response = await spawnInstance(tag1,data);
     }
 
+    function autoInput(){
+        inputData = generateInput();
+    }
+
 </script>
 
 <div class="button-container">
@@ -93,8 +98,10 @@
         </select>
     </div>
     <div class="button-container">
-        <a href="#" class="select-button" on:click={spawnInstanceRequest(operatorSpawnTag,inputData)}>Save</a>
-        <a href="#" class="select-button" on:click={handleClick}>Cancel</a>
+        <a href="#" class="select-button" on:click={()=> spawnInstanceRequest(operatorSpawnTag)}>Save</a>
+        <a href="#" class="select-button" on:click={()=> handleClick()}>Cancel</a>
+        <a href="#" class="select-button" on:click={()=> autoInput()}>Auto Gen</a>
+
     </div>
 </form>
 
