@@ -36,9 +36,11 @@
     }
 
     let operatorSpawnTag = "SPAWN_OPERATOR_INSTANCE";
-    let operatorInfoTag = "OPERATOR_INSTANCE_INFO";
-    let machineInfoTag = "FTA_INSTANCE_INFO";
-    let machineSpawnTag = "SPAWN_FTA_MACHINE_INSTANCE";
+
+    let keyValues = {
+        "Operator": operatorSpawnTag,
+        "Facility Manager": null
+    };
 
      const dispatch = createEventDispatcher();
 
@@ -50,7 +52,13 @@
         handleClick();
         let data = JSON.stringify(inputData);
         // TODO add checks to ensure that all the data is correct
-        response = await spawnInstance(tag1,data);
+        // @ts-ignore
+        let request = keyValues[tag1];
+        if(request==undefined){
+            alert('Undefined Type!')
+        }else{
+            response = await spawnInstance(request,data);
+        }
     }
 
     function autoInput(){
@@ -98,7 +106,7 @@
         </select>
     </div>
     <div class="button-container">
-        <a href="#" class="select-button" on:click={()=> spawnInstanceRequest(operatorSpawnTag)}>Save</a>
+        <a href="#" class="select-button" on:click={()=> spawnInstanceRequest(inputData.role)}>Save</a>
         <a href="#" class="select-button" on:click={()=> handleClick()}>Cancel</a>
         <a href="#" class="select-button" on:click={()=> autoInput()}>Auto Gen</a>
 

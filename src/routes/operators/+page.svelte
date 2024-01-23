@@ -1,19 +1,13 @@
 <script>
 // @ts-nocheck
 
-    import {spawnInstance} from "$lib/connect_to_BASE.js";
 	import OperatorProperties from "../../components/operatorProperties.svelte";
     import FacilityRoomProperties from "../../components/facilityRoomProperties.svelte";
     import ResourceColumn from "../../components/resourceColumn.svelte";
+    import MachineProperties from "../../components/machineProperties.svelte";
     
     let isInputVisible = false;
-    let response = [];
     let button = 'operator';
-
-    let operatorSpawnTag = "SPAWN_OPERATOR_INSTANCE";
-    let operatorInfoTag = "OPERATOR_INSTANCE_INFO";
-    let machineInfoTag = "FTA_INSTANCE_INFO";
-    let machineSpawnTag = "SPAWN_FTA_MACHINE_INSTANCE";
 
     function showInput(event, state = '') {
         event.preventDefault();
@@ -50,7 +44,7 @@
             {:else if button === 'room'}
                 <FacilityRoomProperties on:buttonClick={(event) => showInput(event, 'room')} />
             {:else if button === 'machine'}
-                <!-- Code for 'machine' case (empty in this example) -->
+                <MachineProperties on:buttonClick={(event) => showInput(event, 'machine')} />
             {:else}
                 <p>Invalid view</p>
             {/if}

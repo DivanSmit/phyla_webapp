@@ -68,9 +68,32 @@ export function generateInput(){
         surname: getRandomElement(commonSurnames),
         password: getRandomElement(strongPasswords),
         role: 'Operator',
-        workerID: generateUniqueThreeDigitNumber(),
+        workerID: String(generateUniqueThreeDigitNumber()),
         lunchTime: getRandomElement(times)
     }
     return format
 }
+
+export function generateRoom(){
+
+    let format = {
+        name: 'Room_'+String(generateUniqueThreeDigitNumber()),
+        type: 'Cold Storage Room',
+        size: ['3','3','3']
+    };
+
+    return format
+
+}
+
+export function generateMachine(){
+
+    let format = {
+        name: 'Machine_'+String(generateUniqueThreeDigitNumber()),
+        type: 'FTA Machine'
+    }
+
+    return format
+}
+
 

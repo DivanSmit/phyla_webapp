@@ -1,7 +1,7 @@
 // let ngrok = "https://6ec9-https://grown-goose-completely.ngrok-free.app-182-74-10.ngrok.io/erl/http_session_gen_server/fetchdata";
 let ngrok = "http://localhost:9001"+"/erl/http_session_gen_server/fetchdata";
 
-export async function get_data(Tag1, Tag2 = "INFO") {
+export async function get_data(Tag1 = "", Tag2 = "INFO") {
 
     let MSG = {subject: "INFO", queryParam:Tag2, tag: Tag1};
 
@@ -22,7 +22,7 @@ export async function get_data(Tag1, Tag2 = "INFO") {
     }
 }
 
-export async function spawnInstance(Tag, Param) {
+export async function spawnInstance(Tag = "", Param = "") {
 
     let MSG = {subject: "SPAWN", queryParam:"SPAWN", tag: Tag, param: Param};
 
@@ -43,7 +43,7 @@ export async function spawnInstance(Tag, Param) {
     }
 }
 
-export async function userInteraction(User, Param, ID = '') {
+export async function userInteraction(User = "", Param = "", ID = '') {
 
     let MSG = {subject: "USERInteract", user: User, param: Param, tag: "TASKS", taskID: ID};
 
@@ -64,7 +64,7 @@ export async function userInteraction(User, Param, ID = '') {
     }
 }
 
-export async function getuserData(User, Param) {
+export async function getuserData(User = "", Param = "") {
 
     let MSG = {subject: "UserData", user: User, param: Param, tag: "INFO"};
 

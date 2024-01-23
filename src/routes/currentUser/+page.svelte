@@ -11,6 +11,12 @@
     let taskData = [''];
     let taskIDs = [''];
     let taskTime = [''];
+    let taskType = [''];
+
+    var myKeys = {
+        "fse_operator": "Fruit Sample Evaluation",
+        "mf_operator": "Move Fruit",
+    }
 
     function handleSubmit() {
         // You can implement the login logic here
@@ -33,6 +39,26 @@
         taskIDs = taskData[0].id;
         // @ts-ignore
         taskTime = taskData[0].time;
+        // @ts-ignore
+        taskType = taskData[0].type;
+    }
+
+    function convertDateString(dateString = '') {
+
+        var parts = dateString.split("-");
+        var day = parseInt(parts[0], 10);
+        var month = parseInt(parts[1], 10);
+        var year = parseInt(parts[2], 10);
+
+        var convertedDate = new Date(year, month - 1, day);
+
+        var formattedDate = convertedDate.toLocaleDateString("en-US", {
+            year: "numeric",
+            month: "long",
+            day: "numeric"
+        });
+
+        return formattedDate;
     }
 
 </script>
@@ -85,7 +111,7 @@
         justify-content: space-between;
         align-items: center;
         padding: 10px;
-        border: 1px solid #ccc;
+        border: 2px solid #000000;
         margin: 10px 0;
     }
 
@@ -104,15 +130,35 @@
         border: none;
         border-radius: 4px;
         cursor: pointer;
-        margin-right: 10px;
-    }
-
-    button:last-child {
-        margin-right: 0;
+        margin: 2px;
+        width: 100px;
     }
 
     button:hover {
         background-color: #0056b3;
+    }
+
+    .column {
+        /* display: flex; */
+        flex-direction: column;
+        border-color: #000;
+        border-width: 1px;
+    }
+
+    .first {
+        width: 200px;
+        text-align: left;
+        border-color: #000;
+        border-width: 1px;
+    }
+
+    .second {
+        text-align: center;
+    }
+
+    .third {
+        text-align: right;
+
     }
 
 </style>
@@ -136,11 +182,19 @@
         {:else}
             {#each taskTime as item, index (item)}
                 <div class="element-row">
-                    <div class="info">{item}</div>
+                        <div class="column first">{myKeys[taskType[index]]}</div>
+                        <div class="column second">{item}</div>
+                        <div class="column third buttons">
+                            <button on:click={() => handleTask(index, "StartTask")}>Start Task</button>
+                            <button on:click={() => handleTask(index, "EndTask")}>End Task</button>
+                        </div>
+         
+                    <!-- <div class="info">{item}</div>
+                    <div class="info">{myKeys[taskType[index]]}</div>
                     <div class="buttons">
                         <button on:click={() => handleTask(index, "StartTask")}>Start Task</button>
                         <button on:click={() => handleTask(index, "EndTask")}>End Task</button>
-                    </div>
+                    </div> -->
                 </div>
             {/each}
         {/if}

@@ -3,12 +3,11 @@
     import {onMount} from "svelte";
     import { get_data } from "$lib/connect_to_BASE.js";
 
-    let operatorSpawnTag = "SPAWN_OPERATOR_INSTANCE";
     let operatorInfoTag = "OPERATOR_INSTANCE_INFO";
     let machineInfoTag = "FTA_INSTANCE_INFO";
-    let machineSpawnTag = "SPAWN_FTA_MACHINE_INSTANCE";
+    let roomInfoTag = "FACILITY_ROOM_INSTANCE_INFO";
 
-    let listOfTags= [operatorInfoTag,machineInfoTag];
+    let listOfTags= [operatorInfoTag,machineInfoTag,roomInfoTag];
     let listOfData = [];
     /**
 	 * @type {string | any[]}
@@ -18,6 +17,8 @@
 	 * @type {any[]}
 	 */
     let machineData = [];
+    // @ts-ignore
+    let roomdata = [];
 
     async function fetchData(){
         let len = listOfTags.length;
@@ -31,6 +32,7 @@
 
         operatorData = listOfData[0];
         machineData = listOfData[1];
+        roomdata = listOfData[2];
     }
 
     onMount(()=>{
@@ -79,6 +81,27 @@
                 </div>
             {:else}
                 <p>No machines</p>
+            {/if}
+        </div>
+    </div>
+
+    <div class="header">
+        <h1>Rooms</h1>
+    </div>
+
+    <div class="column-blocks">
+        <div class="operator-container">
+
+            {#if roomdata.length > 0}
+                <div class="data-container">
+                    {#each roomdata as item}
+                        <div class="block">
+                            <p>{item.name}</p>
+                        </div>
+                    {/each}
+                </div>
+            {:else}
+                <p>No rooms</p>
             {/if}
         </div>
     </div>

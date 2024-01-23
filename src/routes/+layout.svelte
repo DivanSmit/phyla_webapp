@@ -13,6 +13,9 @@
         <li>
             <a href="/currentUser">User</a>
         </li>
+        <li>
+            <a href="/calendar">Calendar</a>
+        </li>
 
     </ul>
 </nav>
@@ -24,11 +27,12 @@
         color: black;
         transition: transform 0.2s, font-size 0.2s;
         height: 30px;
+        
     }
     nav:hover {
         transform: translateY(5px); /* Drop down by 5 pixels on hover */
         font-size: 1.1em; /* Increase the font size */
-        text-align: center;
+        text-align: center;  
     }
 
     ul {
@@ -62,5 +66,5 @@
 <slot/>
 
 <footer>
-    <p>&copy; 2023 Stellenbosch University</p>
+    <p>&copy; 2024 Stellenbosch University</p>
 </footer>

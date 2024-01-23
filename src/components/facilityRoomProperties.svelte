@@ -1,7 +1,7 @@
 <script>
     import {spawnInstance} from "$lib/connect_to_BASE.js";
     import { createEventDispatcher } from 'svelte';
-    import {generateInput} from "$lib/supplementary_functions.js";
+    import {generateRoom} from "$lib/supplementary_functions.js";
 
     let response = [];
     let inputData = {
@@ -12,7 +12,15 @@
 
     let types = ['Cold Storage Room', 'Controlled Atmosphere Room','Storage Room','Rearing Room','Facility Room'];
 
-let facilityRoomSpawn = "SPAWN_FACILITY_ROOM_INSTANCE";
+    var myKeys = {
+        'Cold Storage Room': 'cold_storage_room', 
+        'Controlled Atmosphere Room': 'ca_room',
+        'Storage Room': 'storage_room',
+        'Rearing Room': 'rearing_room',
+        'Facility Room': 'facility_room'
+    };
+
+    let facilityRoomSpawn = "SPAWN_FACILITY_ROOM_INSTANCE";
 
     const dispatch = createEventDispatcher();
 
@@ -20,15 +28,18 @@ let facilityRoomSpawn = "SPAWN_FACILITY_ROOM_INSTANCE";
         dispatch('buttonClick', { message: 'Button clicked!' });
     }
 
-    async function spawnInstanceRequest(tag1 = ""){
+    async function spawnInstanceRequest(){
         handleClick();
+        inputData.type = myKeys[inputData.type];
         let data = JSON.stringify(inputData);
         // TODO add checks to ensure that all the data is correct
-        response = await spawnInstance(tag1,data);
+
+        response = await spawnInstance(facilityRoomSpawn,data);
+
     }
 
     function autoInput(){
-        inputData = generateInput();
+        inputData = generateRoom();
     }
 
     function validateInput(value = '0') {
@@ -60,17 +71,17 @@ let facilityRoomSpawn = "SPAWN_FACILITY_ROOM_INSTANCE";
         </select>
     </div>
     <div class="button-container">
-        <label for="input1">Number 1:</label>
+        <label for="input1">W(m):</label>
         <input class="input-size" bind:value={inputData.size[0]} on:input={() => validateInput(inputData.size[0])}>
 
-        <label for="input2">Number 2:</label>
+        <label for="input2">L(m):</label>
         <input class="input-size" bind:value={inputData.size[1]} on:input={() => validateInput(inputData.size[1])}>
 
-        <label for="input3">Number 3:</label>
+        <label for="input3">H(m):</label>
         <input class="input-size" bind:value={inputData.size[2]} on:input={() => validateInput(inputData.size[2])}>
     </div>
     <div class="button-container">
-        <a href="#" class="select-button" on:click={() => spawnInstanceRequest(facilityRoomSpawn)}>Save</a>
+        <a href="#" class="select-button" on:click={() => spawnInstanceRequest()}>Save</a>
         <a href="#" class="select-button" on:click={() =>handleClick()}>Cancel</a>
         <a href="#" class="select-button" on:click={() =>autoInput()}>Auto Gen</a>
 
@@ -99,7 +110,6 @@ let facilityRoomSpawn = "SPAWN_FACILITY_ROOM_INSTANCE";
         text-align: center;
     }
     .input-size {
-        width: 80px;
-        margin-right: 10px;
+        width: 30px;
     }
 </style>
