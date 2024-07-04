@@ -1,4 +1,6 @@
 <script>
+// @ts-nocheck
+
 
     import {onMount} from "svelte";
     import { get_data } from "$lib/connect_to_BASE.js";

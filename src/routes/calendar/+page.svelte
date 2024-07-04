@@ -1,103 +1,133 @@
 <script>
-  // Sample events
-  let events = [
-    { date: new Date(2024, 0, 16), time: "10:00 AM", title: "Meeting 1" },
-    { date: new Date(2024, 0, 17), time: "02:30 PM", title: "Event 2" },
-    { date: new Date(2024, 0, 18), time: "08:00 AM", title: "Task 3" },
-  ];
+  import {get_data} from "$lib/connect_to_BASE.js";
+  import { createEventDispatcher } from 'svelte';
+  import {generateInput} from "$lib/supplementary_functions.js";
 
-  function getCurrentWeekDates() {
-    const today = new Date();
-    const startOfWeek = new Date(today);
-    startOfWeek.setDate(today.getDate() - today.getDay()); // Start of the current week
+  let response = [];
+  let inputData = {
+      name: 'Facility Manager',
+      surname: '',
+      password: '',
+      role: 'Facility Manager',
+      workerID: 1,
+      lunchTime: '13:00'
+  };
 
-    const weekDates = Array.from({ length: 7 }, (_, index) => {
-      const currentDate = new Date(startOfWeek);
-      currentDate.setDate(startOfWeek.getDate() + index);
-      return currentDate;
-    });
+  let roles = ['Operator', 'Facility Manager'];
+  let times = generateTimeList();
 
-    return weekDates;
+  function generateTimeList() {
+      const timeList = [];
+      const startTime = 8 * 60; // 8:00 converted to minutes
+      const endTime = 17 * 60; // 17:00 converted to minutes
+      const interval = 15; // 15-minute interval
+
+      for (let minutes = startTime; minutes <= endTime; minutes += interval) {
+          const hours = Math.floor(minutes / 60);
+          const mins = minutes % 60;
+
+          // Format the time as HH:mm
+          const formattedTime = `${hours.toString().padStart(2, '0')}:${mins.toString().padStart(2, '0')}`;
+          
+          timeList.push(formattedTime);
+      }
+
+      return timeList;
   }
 
-  // Function to add an event
-  function addEvent() {
-    const dateInput = prompt("Enter event date (YYYY-MM-DD):");
-    const time = prompt("Enter event time (e.g., 10:00 AM):");
-    const title = prompt("Enter event title:");
+  let operatorSpawnTag = "SPAWN_OPERATOR_INSTANCE";
 
-    if (dateInput && time && title) {
-      const [year, month, day] = dateInput.split("-").map(Number);
+  let keyValues = {
+      "Operator": operatorSpawnTag,
+      "Facility Manager": "TEST"
+  };
 
-      const eventDate = new Date(year, month - 1, day);
-      eventDate.setHours(Number(time.split(":")[0]));
-      eventDate.setMinutes(Number(time.split(":")[1].split(" ")[0]));
+   const dispatch = createEventDispatcher();
 
-      // Initialize events array if it's not already initialized
-      events = events || [];
-
-      // Use set function to update the reactive state
-      events = [...events, { date: eventDate, time, title }];
-      $: events = events; // This triggers a reactivity update
-    }
+   function handleClick() {
+      dispatch('buttonClick', { message: 'Button clicked!' });
   }
 
-    // Function to check if two dates are on the same day
-  function isSameDay(date1, date2) {
-    return (
-      date1.getDate() === date2.getDate() &&
-      date1.getMonth() === date2.getMonth() &&
-      date1.getFullYear() === date2.getFullYear()
-    );
+  async function spawnInstanceRequest(tag1 = ""){
+      handleClick();
+      // TODO add checks to ensure that all the data is correct
+      response = await get_data("manage_facility", tag1);
+
   }
+
+  // @ts-ignore
+  function autoInput(){
+      // @ts-ignore
+      inputData = generateInput();
+  }
+
 </script>
 
-<div class="calendar">
-  <!-- Display all days of the week -->
-  {#each getCurrentWeekDates() as date (index)}
-    <div class="day">
-      <div class="events">
-        <!-- Display existing events for the current day -->
-        {#each events.filter(event => isSameDay(event.date, date)) as { time, title }}
-          <div class="event">
-            {title} - {time}
-          </div>
-        {/each}
-        <!-- Button to add a new event manually for the current day -->
-        <button on:click={() => addEvent()}>+ Add Event</button>
-      </div>
-      <div>{date.toDateString()}</div>
-    </div>
-  {/each}
+
+<div class="button-container">
+  Enter the details below:
 </div>
 
+<form>
+
+  <div class="button-container">
+      <label for="name">Name:</label>
+      <input type="text" id="name" bind:value={inputData.name} placeholder="Enter your name" />
+  </div>
+  <div class="button-container">
+      <label for="surname">Surname:</label>
+      <input type="text" id="surname" bind:value={inputData.surname} placeholder="Enter your surname" />
+  </div>
+  <div class="button-container">
+      <label for="password">Password:</label>
+      <input type="password" id="password" bind:value={inputData.password} placeholder="Enter your password" />
+  </div>
+  <div class="button-container">
+      <label for="id">ID:</label>
+      <input type="text" id="id" bind:value={inputData.workerID} placeholder="Enter your ID" />
+  </div>
+  <div class="button-container">
+      <label for="role">Role:</label>
+      <select id="role" bind:value={inputData.role}>
+          {#each roles as role}
+            <option value={role}>{role}</option>
+          {/each}
+      </select>
+  </div>
+  <div class="button-container">
+      <label for="title">Lunch:</label>
+      <select id="title" bind:value={inputData.lunchTime}>
+          {#each times as time}
+              <option value={time}>{time}</option>
+          {/each}
+      </select>
+  </div>
+  <div class="button-container">
+      <a href="#" class="select-button" on:click={()=> spawnInstanceRequest("Test")}>Test</a>
+      <a href="#" class="select-button" on:click={()=> spawnInstanceRequest("Test1")}>Test1</a>
+
+  </div>
+</form>
+
 <style>
-  .calendar {
-    display: grid;
-    grid-template-columns: repeat(7, 1fr);
-    gap: 5px;
-    margin: 20px;
+  .button-container {
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: center;
+      align-items: center;
+      gap: 10px;
+      margin: 20px;
   }
 
-  .day {
-    border: 1px solid #ddd;
-    padding: 10px;
-    text-align: center;
-    background-color: #f9f9f9;
-  }
-
-  .events {
-    margin-top: 10px;
-  }
-
-  .event {
-    background-color: #4CAF50;
-    color: white;
-    padding: 5px;
-    margin: 2px;
-    cursor: pointer;
-    border-radius: 3px;
+  .select-button{
+      display: inline-block;
+      background-color: #e0e0e0;
+      color: #000000;
+      border: 1px solid #000;
+      cursor: pointer;
+      text-decoration: none;
+      box-shadow: 0 6px 12px rgba(0, 0, 0, 0.2);
+      width: 50px;
+      text-align: center;
   }
 </style>
-
-

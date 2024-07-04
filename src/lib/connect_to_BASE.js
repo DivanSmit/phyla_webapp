@@ -43,9 +43,9 @@ export async function spawnInstance(Tag = "", Param = "") {
     }
 }
 
-export async function userInteraction(User = "", Param = "", ID = '') {
+export async function userInteraction(User = "", Param = "", data = '') {
 
-    let MSG = {subject: "USERInteract", user: User, param: Param, tag: "TASKS", taskID: ID};
+    let MSG = {subject: "USERInteract", user: User, param: Param, tag: "TASKS", taskID: data};
 
     try {
         let url = new URL(ngrok);
@@ -67,6 +67,27 @@ export async function userInteraction(User = "", Param = "", ID = '') {
 export async function getuserData(User = "", Param = "") {
 
     let MSG = {subject: "UserData", user: User, param: Param, tag: "INFO"};
+
+    try {
+        let url = new URL(ngrok);
+        url.searchParams.append("MSG", JSON.stringify(MSG));
+        const response = await fetch(url);
+        if (response.ok) {
+            const data = await response.json();
+            return data.content;
+        } else {
+            console.error('Request failed:', response.status, response.statusText);
+            return [];
+        }
+    } catch (error) {
+        console.error('Error:', error);
+        return [];
+    }
+}
+
+export async function newComponent(User = "", Param = "") {
+
+    let MSG = {subject: "newComponent", user: User, param: Param};
 
     try {
         let url = new URL(ngrok);
