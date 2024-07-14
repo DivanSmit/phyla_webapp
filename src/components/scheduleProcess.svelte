@@ -5,28 +5,11 @@
     import {onMount} from "svelte";
     import { get_data } from "$lib/connect_to_BASE.js";
 
-    let processTaskData = {
-        processType: '',
-        children: []
-    };
-
-    let formAnswerList = [];
-    let processStepType = "SPAWN_PS_INSTANCE";
     let processTaskType = "SPAWN_PROCESS_TASK_INSTANCE";
 
     // Sample dropdown options for Child
-    let listOfProcessSteps = [];
-
-    let formData = {
-        processType: ''
-    }
-
-    function addChild() {
-        formAnswerList = [...formAnswerList, { ...formData }];
-        formData = {
-            processType: ''
-        };
-    }
+    let listOfProcesses = [];
+    let selectedPattern = {};
 
     const dispatch = createEventDispatcher();
 
@@ -34,19 +17,22 @@
         dispatch('buttonClick', { message: 'Button clicked!' });
     }
 
-    async function saveProcessTask() {
-        handleClick();
-        
-        processTaskData.children = formAnswerList;
-        let response = await newComponent(processTaskType, processTaskData)
-
+    function handleSave() {
+        dispatch('savePattern', { pattern: selectedPattern });
     }
 
+    async function getProcessStructure() {
+        handleClick();
+        let response = await get_data(processTaskType,selectedPattern)
+        selectedPattern = response[0]
+        console.log(selectedPattern)
+        handleSave()
+    }
 
     async function fetchData(){
-        let response = await get_data(processTaskType,"query_create")
-        listOfProcessSteps = response[0]
-        console.log(listOfProcessSteps)
+        let response = await get_data(processTaskType,"query_options")
+        listOfProcesses = response[0]
+
     }
 
     onMount(()=>{
@@ -55,47 +41,26 @@
 </script>
 
 <div class="form-container">
-    <div class="form-title">Enter the Process Details:</div>
+    <div class="form-title">Select a process structure to choose from:</div>
 
     <form>
         <div class="input-group">
-            <label for="name">New Process Name:</label>
-            <input type="text" id="name" bind:value={processTaskData.processType} placeholder="Enter process name" />
+            <label for="capabilities">Available Processes:</label>
+            <select id="capabilities" bind:value={selectedPattern}>
+                {#each listOfProcesses as pattern}
+                    <option value={pattern}>{pattern}</option>
+                {/each}
+            </select>
+        </div>
+
+
+        <div class="button-group">
+            <a href="#" class="button" on:click|preventDefault={getProcessStructure}>Save</a>
+            <a href="#" class="button" on:click|preventDefault={handleClick}>Cancel</a>
         </div>
     </form>
-
-    <div class="form-title">Current Sub-Processes</div>
-    <div class="form-answer-container">
-        {#each formAnswerList as answer, index}
-            <div class="form-answer">
-                <div class="form-answer-header">Form Answer {index + 1}</div>
-                <div class="form-answer-body">
-                    <p><strong>Sub-Processes:</strong> {answer.processType}</p>
-                </div>
-            </div>
-        {/each}
-    </div>
-
-    <div class="form-title">Add Sub-Process Answer</div>
-    <div class="input-group">
-        <label for="child">Select a sub-process:</label>
-        <select id="child" bind:value={formData.processType}>
-            {#each listOfProcessSteps as option}
-                <option value={option}>{option}</option>
-            {/each}
-        </select>
-    </div>
-
-    <div class="button-group">
-        <a href="#" class="button" on:click|preventDefault={addChild}>Add Sub-Process</a>
-    </div>
-
-    <div class="button-group">
-        <a href="#" class="button" on:click|preventDefault={saveProcessTask}>Save</a>
-        <a href="#" class="button" on:click|preventDefault={handleClick}>Cancel</a>
-
-    </div>
 </div>
+
 
 <style>
     .form-container {

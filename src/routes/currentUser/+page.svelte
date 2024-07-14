@@ -1,31 +1,25 @@
 <script>
     // @ts-nocheck
     
-        import { onMount } from "svelte";
-        import { getuserData } from "$lib/connect_to_BASE.js";
-        import { userInteraction } from "$lib/connect_to_BASE.js";
-    
+        import { onMount, onDestroy } from 'svelte';
+        import { userInteraction, getuserData} from '$lib/connect_to_BASE.js';
+        import { usernameStore } from '$lib/stores';
+
+        let taskData = [];
         let username = '';
-        let password = '';
-        let ifLogedIn = false;
+
         let taskStatus = [];
-        let taskData = [''];
         let taskIDs = [''];
         let taskTime = [''];
         let taskNames = [''];
         let selectedItem = '';
         let shoppingList = [];
         let dropdownItems = ['Apple', 'Banana', 'Orange', 'Grapes', 'Mango'];
-    
-        function handleSubmit() {
-            // You can implement the login logic here
-            if (password === '') {
-                ifLogedIn = true;
-                getTaskData();
-            } else {
-                alert('Login failed');
-            }
-        }
+
+        const unsubscribe = usernameStore.subscribe(value => {
+            username = value;
+            console.log("Username: ",username)
+        });
     
         const handleTask = async (index = 0, state = "StartTask") => {
             taskStatus = await userInteraction(username, state, taskIDs[index]);
@@ -34,12 +28,7 @@
         const getTaskData = async () => {
             taskData = await getuserData(username, "TASKSID");
             console.log(taskData)
-            // @ts-ignore
-            taskIDs = taskData[0].id;
-            // @ts-ignore
-            taskTime = taskData[0].time;
-            // @ts-ignore
-            taskNames = taskData[0].names;
+
         }
     
         function convertDateString(dateString = '') {
@@ -65,110 +54,77 @@
                 shoppingList = [...shoppingList, selectedItem];
             }
         }
+
+        onMount(async () => {
+            // Fetch data using username
+            console.log(username);
+
+            const taskData = await getuserData(username, "TASKSID"); // Example of using username in data fetching
+            console.log(taskData);
+            // Process fetched data as needed
+            // @ts-ignore
+            taskIDs = taskData[0].id;
+            // @ts-ignore
+            taskTime = taskData[0].time;
+            // @ts-ignore
+            taskNames = taskData[0].names;
+
+            console.log(taskData);
+
+        });
+
+        onDestroy(() => {
+            unsubscribe(); // Clean up subscription to usernameStore to avoid memory leaks
+        });
     
 </script>
     
-    {#if !ifLogedIn}
-        <div class="container">
-            <div class="form">
-                <h2>Login</h2>
-                <input class="input" type="text" placeholder="Username" bind:value={username} />
-                <!-- <input class="input" type="password" placeholder="Password" bind:value={password} /> -->
-                <button class="button-login" on:click={handleSubmit}>Login</button>
-            </div>
-        </div>
+<h2>Welcome {username}</h2>
+<div class="element-list">
+
+    {#if !taskTime.length || taskTime[0] == ''}
+        <div class="element-row">No Tasks</div>
     {:else}
-        <div class="button-logout">
-            <button on:click={() => ifLogedIn = false}>Log Out</button>
-        </div>
-        <h2>Welcome {username}</h2>
-        <div class="element-list">
-    
-            {#if !taskTime.length || taskTime[0] == ''}
-                <div class="element-row">No Tasks</div>
-            {:else}
-                {#each taskTime as item, index (item)}
-                    {#if new Date(item) <= new Date()}
-                        <div class="element-row">
-                            <div class="column task-name">{taskNames[index]}</div>
-                            <div class="column task-time">{item}</div>
-                            <div class="column task-desc">
-                                <textarea placeholder="Task description"></textarea>
-                            </div>
-                            <div class="column input-field">
-                                <input type="text" placeholder="Input value" />
-                            </div>
-                            <div class="buttons">
-                                <button on:click={() => handleTask(index, "StartTask")}>Start Task</button>
-                                <button on:click={() => handleTask(index, "EndTask")}>End Task</button>
-                            </div>
-                        </div>
-                    {/if}
-                {/each}
-            {/if}
-    
-            <div class="shopping-section">
-                <h3>Shopping List</h3>
-                <div class="dropdown">
-                    <select bind:value={selectedItem}>
-                        <option value="" disabled selected>Select an item</option>
-                        {#each dropdownItems as item}
-                            <option value={item}>{item}</option>
-                        {/each}
-                    </select>
-                    <button on:click={addItemToList}>Add to List</button>
+        {#each taskTime as item, index (item)}
+            {#if new Date(item) <= new Date()}
+                <div class="element-row">
+                    <div class="column task-name">{taskNames[index]}</div>
+                    <div class="column task-time">{item}</div>
+                    <div class="column task-desc">
+                        <textarea placeholder="Task description"></textarea>
+                    </div>
+                    <div class="column input-field">
+                        <input type="text" placeholder="Input value" />
+                    </div>
+                    <div class="buttons">
+                        <button on:click={() => handleTask(index, "StartTask")}>Start Task</button>
+                        <button on:click={() => handleTask(index, "EndTask")}>End Task</button>
+                    </div>
                 </div>
-                <ul>
-                    {#each shoppingList as item}
-                        <li>{item}</li>
-                    {/each}
-                </ul>
-            </div>
-        </div>
+            {/if}
+        {/each}
     {/if}
-    
+
+    <!-- <div class="shopping-section">
+        <h3>Shopping List</h3>
+        <div class="dropdown">
+            <select bind:value={selectedItem}>
+                <option value="" disabled selected>Select an item</option>
+                {#each dropdownItems as item}
+                    <option value={item}>{item}</option>
+                {/each}
+            </select>
+            <button on:click={addItemToList}>Add to List</button>
+        </div>
+        <ul>
+            {#each shoppingList as item}
+                <li>{item}</li>
+            {/each}
+        </ul>
+    </div> -->
+</div>
+
 <style>
-    .container {
-        display: flex;
-        flex-direction: column;
-        align-items: center;
-        justify-content: center;
-        height: 100vh;
-    }
-
-    .form {
-        background-color: #91ce41;
-        border: 1px;
-        border-color: #000;
-        border-radius: 8px;
-        padding: 20px;
-        box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
-        text-align: center;
-    }
-
-    .input {
-        width: 100%;
-        padding: 10px;
-        margin: 10px 0;
-        border: 1px solid #ccc;
-        border-radius: 4px;
-    }
-
-    .button-login {
-        background-color: #007BFF;
-        color: #000000;
-        border: 1px solid black;
-        padding: 10px 20px;
-        border: none;
-        border-radius: 4px;
-        cursor: pointer;
-    }
-
-    .button-logout {
-        display: flex;
-        justify-content: right;
-        margin: 6px;
-    }
 
     .element-list {
         display: flex;

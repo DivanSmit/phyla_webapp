@@ -2,7 +2,8 @@
 
 <script>
 // @ts-nocheck
-
+    import { goto } from '$app/navigation';
+    import { usernameStore } from '$lib/stores';
 	import { userInteraction } from '$lib/connect_to_BASE';
     import { onMount } from 'svelte';
   
@@ -17,14 +18,15 @@
         response = await userInteraction(username, 'LOGIN', password)
         console.log(response)
         
-        if (response[0].reply == 'OK'){
-            userType = response[0].role
-            updateNav()
-            ifLoggedIn = true
+        if (response[0].reply == 'OK') {
+            userType = response[0].role;
+            updateNav();
+            ifLoggedIn = true;
+            console.log("First Username: ",username)
+            usernameStore.set(username);
         }else{
             showError = true;
         }
- 
         
     }
   
@@ -33,6 +35,7 @@
       username = '';
       password = '';
       userType = '';
+      goto('/');
       // Redirect to login page or do any other cleanup
 
     }
@@ -44,11 +47,11 @@
     function updateNav() {
       if (userType === 'facility_manager') {
         navItems = [
-            { name: 'Home', url: '/' },
+            {name: 'Home', url: '/' },
             {name: 'Resources', url:'/operators'},
-            {name: 'Tasks', url:'/tasks'},
             {name: 'Processes', url:'/processes'},
-            {name: 'Schedule', url:'/currentUser'}
+            {name: 'Schedule', url: '/currentUser' },
+            {name: 'Report', url:'/report'}
 
         ];
       } else if (userType === 'operator') {
@@ -159,7 +162,7 @@
         background: linear-gradient(to right, rgba(255, 255, 255, 0.8), rgba(255, 255, 255, 0.8)), url('/hortgro-logo.jpg');
         background-size: auto 100%; /* Auto width, 100% height */
         background-position: left center; /* Align to the left */
-        height: 100vh;
+        height: 95vh;
         display: flex;
         flex-direction: column;
         align-items: center;
@@ -181,13 +184,17 @@
                 <p style="color: red;">Incorrect username or password.</p>
             {/if}
         </div>
+
+        <footer>
+            <p>&copy; 2024 Stellenbosch University</p>
+        </footer>
     </main>
 
   
 {:else}
     
   <nav>
-    <h2>Hortgro Operation Interface</h2>
+    <h1>Hortgro Operation Interface</h1>
     <ul>
       {#each navItems as item}
         <li><a href={item.url}>{item.name}</a></li>
@@ -201,6 +208,3 @@
 {/if}
 
 
-<footer>
-    <p>&copy; 2024 Stellenbosch University</p>
-</footer>

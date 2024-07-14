@@ -6,11 +6,11 @@
     import { get_data } from "$lib/connect_to_BASE.js";
 
     let processStepData = {
-        name: '',
+        type: '',
         FSM: '',
         duration: 0,
         description: '',
-        components: []
+        resources: []
     };
 
     let componentData = {
@@ -44,7 +44,7 @@
     async function saveProcessStep() {
         handleClick();
         
-        processStepData.components = componentList;
+        processStepData.resources = componentList;
         console.log("Process Step Data: ", processStepData);
 
         response = await newComponent(processStepType, processStepData)
@@ -68,7 +68,7 @@
     <form>
         <div class="input-group">
             <label for="name">Process Step Name:</label>
-            <input type="text" id="name" bind:value={processStepData.name} placeholder="Enter process step name" />
+            <input type="text" id="name" bind:value={processStepData.type} placeholder="Enter process step name" />
         </div>
         <div class="input-group">
             <label for="FSM">FSM:</label>
@@ -84,22 +84,23 @@
             <textarea id="description" bind:value={processStepData.description} placeholder="Enter description"></textarea>
         </div>
 
-        <div class="form-title">Components</div>
+        <div class="form-title">Resources</div>
         <div class="components-container">
             {#each componentList as component, index}
                 <div class="component-card">
-                    <div class="component-header">Component {index + 1}</div>
+                    <div class="component-header">Resource {index + 1}</div>
                     <div class="component-body">
                         <p><strong>Capabilities:</strong> {component.capabilities}</p>
                         <p><strong>Name:</strong> {component.name}</p>
                         <p><strong>Change:</strong> {component.change}</p>
                         <p><strong>Port:</strong> {component.port}</p>
+                        
                     </div>
                 </div>
             {/each}
         </div>
 
-        <div class="form-title">Add Component</div>
+        <div class="form-title">Add Resource</div>
         <div class="input-group">
             <label for="capabilities">Capabilities:</label>
             <select id="capabilities" bind:value={componentData.capabilities}>
@@ -109,8 +110,8 @@
             </select>
         </div>
         <div class="input-group">
-            <label for="componentName">Component Name:</label>
-            <input type="text" id="componentName" bind:value={componentData.name} placeholder="Enter component name" />
+            <label for="componentName">Resource Name (If specific is required):</label>
+            <input type="text" id="componentName" bind:value={componentData.name} placeholder="Enter resource name" />
         </div>
         <div class="input-group">
             <label for="change">Change:</label>
@@ -121,7 +122,7 @@
             <input type="number" id="port" bind:value={componentData.port} placeholder="Enter port" />
         </div>
         <div class="button-group">
-            <a href="#" class="button" on:click|preventDefault={addComponent}>Add Component</a>
+            <a href="#" class="button" on:click|preventDefault={addComponent}>Add Resource</a>
         </div>
 
         <div class="button-group">
