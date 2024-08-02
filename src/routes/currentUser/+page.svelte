@@ -4,6 +4,7 @@
         import { onMount, onDestroy } from 'svelte';
         import { userInteraction, getuserData} from '$lib/connect_to_BASE.js';
         import { usernameStore } from '$lib/stores';
+        import QrScanner from '../../components/qrscanner.svelte';
 
         let taskData = [];
         let username = '';
@@ -104,6 +105,8 @@
             {/if}
         {/each}
     {/if}
+
+    <QrScanner />
 
     <!-- <div class="shopping-section">
         <h3>Shopping List</h3>

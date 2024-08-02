@@ -24,6 +24,7 @@
             ifLoggedIn = true;
             console.log("First Username: ",username)
             usernameStore.set(username);
+            goto('/');
         }else{
             showError = true;
         }
@@ -36,6 +37,8 @@
       password = '';
       userType = '';
       goto('/');
+      usernameStore.set("");
+
       // Redirect to login page or do any other cleanup
 
     }
@@ -198,7 +201,7 @@
     <ul>
       {#each navItems as item}
         <li><a href={item.url}>{item.name}</a></li>
-      {/each}
+      {/each}   
       <li><button on:click={logout}>Logout</button></li>
     </ul>
   </nav>

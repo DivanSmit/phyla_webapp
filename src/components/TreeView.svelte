@@ -43,7 +43,7 @@
         nodeInformation.processID = processID;
 
         if(customDateTime){
-            nodeInformation.startTime = calculateUnixTimestamp();
+            nodeInformation.startTime = calculateUnixTimestamp()-7200000;
         }
 
         return nodeInformation;

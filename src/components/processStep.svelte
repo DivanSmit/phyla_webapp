@@ -6,10 +6,11 @@
     import { get_data } from "$lib/connect_to_BASE.js";
 
     let processStepData = {
-        type: '',
+        processType: '',
         FSM: '',
         duration: 0,
         description: '',
+        truAction:'None',
         resources: []
     };
 
@@ -24,6 +25,7 @@
     let processStepType = "SPAWN_PS_INSTANCE";
     let response = {}
     let listOfCapabilities = []
+    let actions = ['None','Collect','Measure' , 'Store', 'Transform']
 
     const dispatch = createEventDispatcher();
 
@@ -68,7 +70,7 @@
     <form>
         <div class="input-group">
             <label for="name">Process Step Name:</label>
-            <input type="text" id="name" bind:value={processStepData.type} placeholder="Enter process step name" />
+            <input type="text" id="name" bind:value={processStepData.processType} placeholder="Enter process step name" />
         </div>
         <div class="input-group">
             <label for="FSM">FSM:</label>
@@ -82,6 +84,15 @@
         <div class="input-group">
             <label for="description">Description:</label>
             <textarea id="description" bind:value={processStepData.description} placeholder="Enter description"></textarea>
+        </div>
+
+        <div class="input-group">
+            <label for="capabilities">TRU Action:</label>
+            <select id="capabilities" bind:value={processStepData.truAction}>
+                {#each actions as act}
+                    <option value={act}>{act}</option>
+                {/each}
+            </select>
         </div>
 
         <div class="form-title">Resources</div>
