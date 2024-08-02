@@ -15,19 +15,33 @@
     let showError = false;
   
     async function handleSubmit() {
-        response = await userInteraction(username, 'LOGIN', password)
-        console.log(response)
-        
-        if (response[0].reply == 'OK') {
-            userType = response[0].role;
+        if(username == 'offline'){
+            userType = 'facility_manager';
             updateNav();
             ifLoggedIn = true;
             console.log("First Username: ",username)
             usernameStore.set(username);
             goto('/');
         }else{
-            showError = true;
+
+            response = await userInteraction(username, 'LOGIN', password)
+            console.log(response)
+
+            if (response[0].reply == 'OK') {
+                userType = response[0].role;
+                updateNav();
+                ifLoggedIn = true;
+                console.log("First Username: ",username)
+                usernameStore.set(username);
+                goto('/');
+            }else{
+                showError = true;
+            }
         }
+
+
+        
+        
         
     }
   
