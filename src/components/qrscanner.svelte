@@ -1,75 +1,71 @@
 <script>
-// @ts-nocheck
-
-    import { onMount, onDestroy } from 'svelte';
-    import { Html5Qrcode } from 'html5-qrcode';
-
-    let scanCompleted = false;
+    // @ts-nocheck
+    
+    import QrReaderBox from "./qrReaderBox.svelte"; // Import the child QR scanner component
+    
+    let scanCompleted = true;
     let decodedText = '';
-    let html5QrCode;
-    let errorMessage = '';
-
-    onMount(() => {
-        startScan();
-    });
-
-    onDestroy(() => {
-        stopScan();
-    });
-
-    function startScan() {
-        html5QrCode = new Html5Qrcode("reader");
-
-        const config = { fps: 10, qrbox: { width: 250, height: 250 } };
-        html5QrCode.start(
-            { facingMode: "environment" },
-            config,
-            onScanSuccess,
-            onScanError
-        ).catch(err => {
-            errorMessage = 'Failed to start QR scanner: ' + err;
-            console.error(errorMessage);
-        });
-    }
-
-    function stopScan() {
-        if (html5QrCode) {
-            html5QrCode.stop().catch(err => console.error('Failed to stop QR scanner', err));
-        }
-    }
-
-    function onScanSuccess(decodedTextResult) {
-        decodedText = decodedTextResult;
-        console.log(`Code scanned: ${decodedText}`);
+    let showScanner = true;
+    
+    // Handle successful scan
+    function handleScanSuccess(event) {
+        decodedText = event.detail;
         scanCompleted = true;
-
-        stopScan();
+        showScanner = false; // Hide scanner after successful scan
     }
-
-    function onScanError(err) {
-        if (err.name === 'NotFoundException') {
-            errorMessage = 'No QR code found. Please ensure the QR code is in the frame and try again.';
-        } else {
-            errorMessage = `Error scanning: ${err.message}`;
-        }
-        console.log(errorMessage);
-    }
-
+    
+    
+    // Start a new scan
     function startNewScan() {
         scanCompleted = false;
         decodedText = '';
-        errorMessage = '';
-        startScan();
+        showScanner = true;
     }
-</script>
+    </script>
+    
+    {#if !scanCompleted}
+        {#if showScanner}
+            <QrReaderBox on:scanSuccess={handleScanSuccess} />
+        {/if}
+        <div class="button-container">
 
-{#if !scanCompleted}
-    <div id="reader" style="width: 500px; height: 500px;"></div>
-    {#if errorMessage}
-        <p style="color: red;">{errorMessage}</p>
+        </div>
+    {:else}
+        <div class="button-container">
+            <a href="#" class="button" on:click|preventDefault={(event) => startNewScan()}>Scan QR Code</a>
+        </div>
     {/if}
-    <button on:click={startNewScan}>Start New Scan</button>
-{:else}
-    <p>Scan complete! Code: {decodedText}</p>
-    <button on:click={startNewScan}>Scan Again</button>
-{/if}
+
+    <style>
+        .button-container {
+        display: flex;
+        flex-wrap: wrap;
+        justify-content: center;
+        align-items: center;
+        gap: 10px;
+        margin: 20px;
+    }
+
+    .button {
+        display: inline-block;
+        padding: 15px 30px;
+        margin: 10px;
+        background-color: #91ce41;
+        color: #000000;
+        border: 2px solid #000;
+        border-radius: 50px;
+        cursor: pointer;
+        font-size: 18px;
+        text-decoration: none;
+        transition: background-color 0.3s, transform 0.3s, box-shadow 0.3s;
+        box-shadow: 0 6px 12px rgba(0, 0, 0, 0.2);
+        width: 150px;
+        text-align: center;
+    }
+
+    .button:hover {
+        transform: scale(1.1);
+        box-shadow: 0 8px 16px rgba(0, 0, 0, 0.3);
+    }
+
+    </style>

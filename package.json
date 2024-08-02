@@ -32,6 +32,7 @@
 	},
 	"type": "module",
 	"dependencies": {
+		"@zxing/library": "^0.21.2",
 		"chart.js": "^4.4.3",
 		"chartjs-adapter-date-fns": "^3.0.0",
 		"html5-qrcode": "^2.3.8",

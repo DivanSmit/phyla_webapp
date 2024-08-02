@@ -38,11 +38,6 @@
                 showError = true;
             }
         }
-
-
-        
-        
-        
     }
   
     function logout() {
