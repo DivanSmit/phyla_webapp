@@ -2,14 +2,23 @@
     // @ts-nocheck
     
     import QrReaderBox from "./qrReaderBox.svelte"; // Import the child QR scanner component
+    import { onMount, onDestroy, createEventDispatcher } from 'svelte';
+
+    const dispatch = createEventDispatcher();
     
     let scanCompleted = true;
     let decodedText = '';
-    let showScanner = true;
+    let showScanner = false;
     
     // Handle successful scan
     function handleScanSuccess(event) {
         decodedText = event.detail;
+        console.log(decodedText)
+        dispatch('QRValue', decodedText)
+
+    }
+
+    function endScanning(event){
         scanCompleted = true;
         showScanner = false; // Hide scanner after successful scan
     }
@@ -23,15 +32,12 @@
     }
     </script>
     
-    {#if !scanCompleted}
-        {#if showScanner}
-            <QrReaderBox on:scanSuccess={handleScanSuccess} />
-        {/if}
-        <div class="button-container">
+    {#if showScanner}
+        <QrReaderBox on:scanSuccess={handleScanSuccess} on:scanEnd={endScanning} />
 
-        </div>
     {:else}
         <div class="button-container">
+            <!-- svelte-ignore a11y-invalid-attribute -->
             <a href="#" class="button" on:click|preventDefault={(event) => startNewScan()}>Scan QR Code</a>
         </div>
     {/if}

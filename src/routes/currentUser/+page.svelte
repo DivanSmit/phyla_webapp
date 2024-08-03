@@ -15,7 +15,7 @@
         let taskNames = [''];
         let selectedItem = '';
         let shoppingList = [];
-        let dropdownItems = ['Apple', 'Banana', 'Orange', 'Grapes', 'Mango'];
+        let dropdownItems = ['apple', 'banana', 'orange', 'grapes', 'mango'];
 
         const unsubscribe = usernameStore.subscribe(value => {
             username = value;
@@ -30,6 +30,11 @@
             taskData = await getuserData(username, "TASKSID");
             console.log(taskData)
 
+        }
+
+        const confirmWIthBase = async (event) =>{
+            console.log('Received event: ',event.detail)
+            
         }
     
         function convertDateString(dateString = '') {
@@ -106,7 +111,7 @@
         {/each}
     {/if}
 
-    <QrScanner />
+    <QrScanner on:QRValue={confirmWIthBase}/>
 
     <!-- <div class="shopping-section">
         <h3>Shopping List</h3>

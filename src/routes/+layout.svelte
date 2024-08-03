@@ -132,6 +132,7 @@
         color: black;
         transition: transform 0.2s, font-size 0.2s;
         height: 30px;
+        width: 100%;
     }
 
     nav:hover {
