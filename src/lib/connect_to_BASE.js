@@ -1,10 +1,9 @@
 // @ts-nocheck
 // let ngrok = "https://6ec9-https://grown-goose-completely.ngrok-free.app-182-74-10.ngrok.io/erl/http_session_gen_server/fetchdata";
-let ngrok = "http://192.168.1.58:9001"+"/erl/http_session_gen_server/fetchdata";
+let ngrok = "http://192.168.1.58:9001/erl/http_session_gen_server/fetchdata";
 
 export async function get_data(Tag1 = "", Tag2 = "INFO") {
-
-    let MSG = {subject: "INFO", queryParam:Tag2, tag: Tag1};
+    let MSG = {subject: "INFO", queryParam: Tag2, tag: Tag1};
 
     try {
         let url = new URL(ngrok);
