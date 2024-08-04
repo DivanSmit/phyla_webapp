@@ -220,41 +220,4 @@
     button:hover {
         background-color: #0056b3;
     }
-
-    .shopping-section {
-        margin-top: 20px;
-        width: 100%;
-    }
-
-    .dropdown {
-        display: flex;
-        justify-content: space-between;
-        align-items: center;
-        margin-bottom: 10px;
-    }
-
-    .dropdown select {
-        width: calc(100% - 110px);
-        padding: 10px;
-        border: 1px solid #ccc;
-        border-radius: 4px;
-    }
-
-    .dropdown button {
-        padding: 10px 20px;
-        margin-left: 10px;
-    }
-
-    ul {
-        list-style-type: none;
-        padding: 0;
-    }
-
-    li {
-        padding: 10px;
-        border: 1px solid #ccc;
-        border-radius: 4px;
-        margin-bottom: 5px;
-        background-color: #f9f9f9;
-    }
 </style>

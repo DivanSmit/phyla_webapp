@@ -62,9 +62,11 @@
     <div id="reader" bind:this={readerElement}></div>
 
     <div class="button-container">
+        <!-- svelte-ignore a11y-invalid-attribute -->
         <a href="#" class="button" on:click|preventDefault={(event) => stopScan()}>Complete Scanning</a>
     </div>
 
+    
 <style>
 
     #reader {
