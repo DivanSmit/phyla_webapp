@@ -9,18 +9,19 @@
     let scanCompleted = true;
     let decodedText = '';
     let showScanner = false;
+    let decodedTexts = [];
     
     // Handle successful scan
     function handleScanSuccess(event) {
         decodedText = event.detail;
-        console.log(decodedText)
-        dispatch('QRValue', decodedText)
-
+        decodedTexts.push(decodedText);
     }
 
     function endScanning(event){
         scanCompleted = true;
         showScanner = false; // Hide scanner after successful scan
+        dispatch('QRValue', decodedTexts)
+        decodedTexts = []
     }
     
     
@@ -33,7 +34,10 @@
     </script>
     
     {#if showScanner}
+    <div class="qrScanner">
         <QrReaderBox on:scanSuccess={handleScanSuccess} on:scanEnd={endScanning} />
+    </div>
+        
 
     {:else}
         <div class="button-container">
@@ -43,35 +47,39 @@
     {/if}
 
     <style>
+        .qrScanner{
+            max-width: 300px;
+            max-height: 300px;
+        }
         .button-container {
-        display: flex;
-        flex-wrap: wrap;
-        justify-content: center;
-        align-items: center;
-        gap: 10px;
-        margin: 20px;
-    }
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            align-items: center;
+            gap: 10px;
+            margin: 20px;
+        }
 
-    .button {
-        display: inline-block;
-        padding: 15px 30px;
-        margin: 10px;
-        background-color: #91ce41;
-        color: #000000;
-        border: 2px solid #000;
-        border-radius: 50px;
-        cursor: pointer;
-        font-size: 18px;
-        text-decoration: none;
-        transition: background-color 0.3s, transform 0.3s, box-shadow 0.3s;
-        box-shadow: 0 6px 12px rgba(0, 0, 0, 0.2);
-        width: 150px;
-        text-align: center;
-    }
+        .button {
+            display: inline-block;
+            padding: 15px 30px;
+            margin: 10px;
+            background-color: #91ce41;
+            color: #000000;
+            border: 2px solid #000;
+            border-radius: 50px;
+            cursor: pointer;
+            font-size: 18px;
+            text-decoration: none;
+            transition: background-color 0.3s, transform 0.3s, box-shadow 0.3s;
+            box-shadow: 0 6px 12px rgba(0, 0, 0, 0.2);
+            width: 150px;
+            text-align: center;
+        }
 
-    .button:hover {
-        transform: scale(1.1);
-        box-shadow: 0 8px 16px rgba(0, 0, 0, 0.3);
-    }
+        .button:hover {
+            transform: scale(1.1);
+            box-shadow: 0 8px 16px rgba(0, 0, 0, 0.3);
+        }
 
     </style>

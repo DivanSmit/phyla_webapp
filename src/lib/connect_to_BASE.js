@@ -1,6 +1,7 @@
 // @ts-nocheck
-// let ngrok = "https://6ec9-https://grown-goose-completely.ngrok-free.app-182-74-10.ngrok.io/erl/http_session_gen_server/fetchdata";
-let ngrok = "http://192.168.1.73:9001"+"/erl/http_session_gen_server/fetchdata";
+const backendIp = import.meta.env.VITE_BACKEND_IP;
+const backendPort = import.meta.env.VITE_BACKEND_PORT;
+const ngrok = `http://192.168.137.1:9001/erl/http_session_gen_server/fetchdata`;
 // let ngrok = "http://localhost:9001"+"/erl/http_session_gen_server/fetchdata";
 
 export async function get_data(Tag1 = "", Tag2 = "INFO") {

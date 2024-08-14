@@ -16,7 +16,7 @@
     
     onDestroy(() => {
         console.log("QrScanner destroyed"); // Debug: Log when the component is destroyed
-        stopScan();
+        stopScan()
     });
     
     function startScan() {
@@ -24,7 +24,7 @@
             console.log("Starting QR scan"); // Debug: Log when starting the scan
             html5QrCode = new Html5Qrcode(readerElement.id); // Pass the ID string, not the element itself
     
-            const config = { fps: 10, qrbox: { width: 300, height: 300 } };
+            const config = { fps: 10, qrbox: { width: 250, height: 100 } };
             html5QrCode.start(
                 { facingMode: "environment" },
                 config,
@@ -71,8 +71,8 @@
 
     #reader {
         width: 100%;
-        max-width: 500px;
-        height: 400px;
+        max-width: 300px;
+        height: 220px;
         border: 1px solid black;
     }
     .button-container {

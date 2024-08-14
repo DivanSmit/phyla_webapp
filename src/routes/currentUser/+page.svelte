@@ -5,78 +5,21 @@
         import { userInteraction, getuserData} from '$lib/connect_to_BASE.js';
         import { usernameStore } from '$lib/stores';
         import QrScanner from '../../components/qrscanner.svelte';
+        import QrGenerator from '../../components/QrGenerator.svelte';
+        import TaskComponent from '../../components/userTask.svelte';
 
         let taskData = [];
         let username = '';
-
-        let taskStatus = [];
-        let taskIDs = [''];
-        let taskTime = [''];
-        let taskNames = [''];
-        let selectedItem = '';
-        let shoppingList = [];
-        let dropdownItems = ['apple', 'banana', 'orange', 'grapes', 'mango'];
 
         const unsubscribe = usernameStore.subscribe(value => {
             username = value;
             console.log("Username: ",username)
         });
-    
-        const handleTask = async (index = 0, state = "StartTask") => {
-            taskStatus = await userInteraction(username, state, taskIDs[index]);
-        };
-    
-        const getTaskData = async () => {
-            taskData = await getuserData(username, "TASKSID");
-            console.log(taskData)
-
-        }
-
-        const confirmWIthBase = async (event) =>{
-            console.log('Received event: ',event.detail)
-            
-        }
-    
-        function convertDateString(dateString = '') {
-    
-            var parts = dateString.split("-");
-            var day = parseInt(parts[0], 10);
-            var month = parseInt(parts[1], 10);
-            var year = parseInt(parts[2], 10);
-    
-            var convertedDate = new Date(year, month - 1, day);
-    
-            var formattedDate = convertedDate.toLocaleDateString("en-US", {
-                year: "numeric",
-                month: "long",
-                day: "numeric"
-            });
-    
-            return formattedDate;
-        }
-    
-        function addItemToList() {
-            if (selectedItem && !shoppingList.includes(selectedItem)) {
-                shoppingList = [...shoppingList, selectedItem];
-            }
-        }
 
         onMount(async () => {
-            // Fetch data using username
-            console.log(username);
-
-            const taskData = await getuserData(username, "TASKSID"); // Example of using username in data fetching
-            console.log(taskData);
-            // Process fetched data as needed
-            // @ts-ignore
-            taskIDs = taskData[0].id;
-            // @ts-ignore
-            taskTime = taskData[0].time;
-            // @ts-ignore
-            taskNames = taskData[0].names;
-
-            console.log(taskData);
-
+            const response = await getuserData(username, "TASKSID"); // Example of using username in data fetching
+            taskData = response[0]
+            console.log(taskData)
         });
 
         onDestroy(() => {
@@ -88,48 +31,16 @@
 <h2>Welcome {username}</h2>
 <div class="element-list">
 
-    {#if !taskTime.length || taskTime[0] == ''}
+    {#if taskData.length == 0}
         <div class="element-row">No Tasks</div>
     {:else}
-        {#each taskTime as item, index (item)}
-            {#if new Date(item) <= new Date()}
-                <div class="element-row">
-                    <div class="column task-name">{taskNames[index]}</div>
-                    <div class="column task-time">{item}</div>
-                    <div class="column task-desc">
-                        <textarea placeholder="Task description"></textarea>
-                    </div>
-                    <div class="column input-field">
-                        <input type="text" placeholder="Input value" />
-                    </div>
-                    <div class="buttons">
-                        <button on:click={() => handleTask(index, "StartTask")}>Start Task</button>
-                        <button on:click={() => handleTask(index, "EndTask")}>End Task</button>
-                    </div>
-                </div>
-            {/if}
+        {#each taskData as task}
+            <TaskComponent largeTaskObject={task}/>
         {/each}
     {/if}
 
-    <QrScanner on:QRValue={confirmWIthBase}/>
 
-    <!-- <div class="shopping-section">
-        <h3>Shopping List</h3>
-        <div class="dropdown">
-            <select bind:value={selectedItem}>
-                <option value="" disabled selected>Select an item</option>
-                {#each dropdownItems as item}
-                    <option value={item}>{item}</option>
-                {/each}
-            </select>
-            <button on:click={addItemToList}>Add to List</button>
-        </div>
-        <ul>
-            {#each shoppingList as item}
-                <li>{item}</li>
-            {/each}
-        </ul>
-    </div> -->
+    <QrGenerator />
 </div>
 
 <style>
@@ -221,3 +132,27 @@
         background-color: #0056b3;
     }
 </style>
+
+    <!-- 
+
+        
+        {#each taskTime as item, index (item)}
+            {#if new Date(item) <= new Date()}
+                <div class="element-row">
+                    <div class="column task-name">{taskNames[index]}</div>
+                    <div class="column task-time">{item}</div>
+                    <div class="column task-desc">
+                        <textarea placeholder="Task description"></textarea>
+                    </div>
+                    <div class="column input-field">
+                        <input type="text" placeholder="Input value" />
+                    </div>
+                    <div class="buttons">
+                        <button on:click={() => handleTask(index, "StartTask")}>Start Task</button>
+                        <button on:click={() => handleTask(index, "EndTask")}>End Task</button>
+                    </div>
+                </div>
+            {/if}
+        {/each}
+    {/if} -->
+
