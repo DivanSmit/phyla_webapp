@@ -4,7 +4,7 @@
 // @ts-nocheck
     import { goto } from '$app/navigation';
     import { usernameStore } from '$lib/stores';
-	import { userInteraction } from '$lib/connect_to_BASE';
+	import { userInteraction,get_data } from '$lib/connect_to_BASE';
     import { onMount } from 'svelte';
   
     let ifLoggedIn = false; // Assuming this controls whether user is logged in
@@ -50,6 +50,10 @@
 
       // Redirect to login page or do any other cleanup
 
+    }
+
+    async function logData(){
+        let log = await get_data("SPAWN_OPERATOR_INSTANCE", "logEvents")
     }
   
     // Example navigation items based on user type
@@ -197,6 +201,8 @@
                 <p style="color: red;">Incorrect username or password.</p>
             {/if}
         </div>
+
+        <button class="button-login" on:click={logData}>Log Data</button>
 
         <footer>
             <p>&copy; 2024 Stellenbosch University</p>

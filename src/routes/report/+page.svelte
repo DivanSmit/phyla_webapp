@@ -3,7 +3,8 @@
 
     import Section1 from "../../components/reports_components/operator_performance.svelte";
     import Section2 from "../../components/reports_components/facility_room_data.svelte";
-    import Section3 from "../../components/startFSETask.svelte";
+    import Section3 from "../../components/table.svelte";
+    import Section4 from "../../components/reports_components/generateReport.svelte";
 
     let isInputVisible = false;
     let button = '';
@@ -19,6 +20,7 @@
 
         button = state;
     }
+
 </script>
 
 <div class="main">
@@ -26,7 +28,8 @@
     <div class="button-container">
         <button class="button" on:click={(event) => showInput(event, 'section1')}>Operator Performance</button>
         <button class="button" on:click={(event) => showInput(event, 'section2')}>Room Data</button>
-        <button class="button" on:click={(event) => showInput(event, 'section3')}>Past Processes</button>
+        <button class="button" on:click={(event) => showInput(event, 'section3')}>Facility Tasks</button>
+        <button class="button" on:click={(event) => showInput(event, 'section4')}>Trial Report</button>
     </div>
 
     {#if isInputVisible}
@@ -38,7 +41,10 @@
             <Section2 on:buttonClick={(event) => showInput(event, 'section2')}/>
         {/if}
         {#if button === 'section3'}
-            <Section3 />
+            <Section3 on:buttonClick={(event) => showInput(event, 'section3')}/>
+        {/if}
+        {#if button === 'section4'}
+            <Section4 on:buttonClick={(event) => showInput(event, 'section4')}/>
         {/if}
     </div>
     {/if}

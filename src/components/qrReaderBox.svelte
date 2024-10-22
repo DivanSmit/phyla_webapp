@@ -44,8 +44,8 @@
             console.log("Stopping QR scan"); // Debug: Log when stopping the scan
             html5QrCode.stop().catch(err => console.error('Failed to stop QR scanner:', err));
             html5QrCode = null;
+            dispatch('scanEnd', '');
         }
-        dispatch('scanEnd', '');
     }
     
     function onScanSuccess(decodedTextResult) {

@@ -11,7 +11,14 @@ export async function get_data(Tag1 = "", Tag2 = "INFO") {
     try {
         let url = new URL(ngrok);
         url.searchParams.append("MSG", JSON.stringify(MSG));
+        // Capture the start time
+        const startTime = Date.now();
         const response = await fetch(url);
+        // Capture the end time
+        const endTime = Date.now();
+        // Calculate and print the latency
+        const latency = endTime - startTime;
+        console.log(`Latency: ${latency} ms`);
         if (response.ok) {
             const data = await response.json();
             return data.content;
@@ -32,7 +39,14 @@ export async function data_exchange(Cap = "", Tag1 = "INFO", Tag2) {
     try {
         let url = new URL(ngrok);
         url.searchParams.append("MSG", JSON.stringify(MSG));
+        // Capture the start time
+        const startTime = Date.now();
         const response = await fetch(url);
+        // Capture the end time
+        const endTime = Date.now();
+        // Calculate and print the latency
+        const latency = endTime - startTime;
+        console.log(`Latency: ${latency} ms`);
         if (response.ok) {
             const data = await response.json();
             return data.content;
@@ -89,24 +103,37 @@ export async function userInteraction(User = "", Param = "", data = '') {
 }
 
 export async function getuserData(User = "", Param = "") {
-
     let MSG = {subject: "UserData", user: User, param: Param, tag: "INFO"};
 
     try {
         let url = new URL(ngrok);
         url.searchParams.append("MSG", JSON.stringify(MSG));
+
+        // Capture the start time
+        const startTime = Date.now();
         const response = await fetch(url);
+        // Capture the end time
+        const endTime = Date.now();
+        // Calculate and print the latency
+        const latency = endTime - startTime;
+        console.log(`Latency: ${latency} ms`);
+
         if (response.ok) {
             const data = await response.json();
+            
             return data.content;
         } else {
             console.error('Request failed:', response.status, response.statusText);
             return [];
         }
+
     } catch (error) {
         console.error('Error:', error);
         return [];
     }
+
+    const endTime = Date.now();
+
 }
 
 export async function newComponent(User = "", Param = "") {

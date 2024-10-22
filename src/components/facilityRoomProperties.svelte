@@ -60,7 +60,11 @@
 
     <div class="button-container">
         <label for="name">Name:</label>
-        <input type="text" id="name" bind:value={inputData.name} placeholder="Enter your name" />
+        <input type="text" id="name" bind:value={inputData.name} placeholder="Enter room name" />
+    </div>
+    <div class="button-container">
+        <label for="name">Capacity:</label>
+        <input type="text" id="name" bind:value={inputData.name} placeholder="Enter the room capacity" />
     </div>
     <div class="button-container">
         <label for="role">Type:</label>
@@ -70,7 +74,8 @@
             {/each}
         </select>
     </div>
-    <div class="button-container">
+
+    <!-- <div class="button-container">
         <label for="input1">W(m):</label>
         <input class="input-size" bind:value={inputData.size[0]} on:input={() => validateInput(inputData.size[0])}>
 
@@ -79,11 +84,11 @@
 
         <label for="input3">H(m):</label>
         <input class="input-size" bind:value={inputData.size[2]} on:input={() => validateInput(inputData.size[2])}>
-    </div>
+    </div> -->
     <div class="button-container">
         <a href="#" class="select-button" on:click={() => spawnInstanceRequest()}>Save</a>
         <a href="#" class="select-button" on:click={() =>handleClick()}>Cancel</a>
-        <a href="#" class="select-button" on:click={() =>autoInput()}>Auto Gen</a>
+        <!-- <a href="#" class="select-button" on:click={() =>autoInput()}>Auto Gen</a> -->
 
     </div>
 </form>

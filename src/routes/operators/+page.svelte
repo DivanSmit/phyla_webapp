@@ -31,9 +31,9 @@
         <p class="mainText">Click on a button below:</p>
         <div class="button-container">
             <a href="#" class="button" on:click|preventDefault={(event) => showInput(event, 'operator')}>Add Operator</a>
-            <a href="#" class="button" on:click|preventDefault={(event) => showInput(event, 'machine')}>Add Machine</a>
-            <a href="#" class="button" on:click|preventDefault={(event) => showInput(event, 'room')}>Add Room</a>
-            <a href="#" class="button">Add Fruit</a>
+            <a href="#" class="button" on:click|preventDefault={(event) => showInput(event, 'machine')}>Add Equipment</a>
+            <a href="#" class="button" on:click|preventDefault={(event) => showInput(event, 'room')}>Add Facility Room</a>
+            <!-- <a href="#" class="button">Add Fruit</a> -->
         </div>
     </div>
 

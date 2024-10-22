@@ -83,7 +83,7 @@
 
     <div class="boolean-container">
         <input type="checkbox" id="select-all" bind:checked={selectAllData} />
-        <label for="select-all">Select All Data</label>
+        <label for="select-all">Select All Operators</label>
     </div>    
 
     {#if !selectAllData}
@@ -94,10 +94,7 @@
                     <input type="date" id="start-date" bind:value={startDate} />
                     <input type="time" id="start-time" bind:value={startTime} />
                 </div>
-            </div>
-        </div>
-        <div class="date-time-container">
-            <div class="date-time-group">
+
                 <h3>End Date and Time</h3>
                 <div class="input-group">
                     <input type="date" id="end-date" bind:value={endDate} />

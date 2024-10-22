@@ -56,6 +56,10 @@
         <input type="text" id="name" bind:value={inputData.name} placeholder="Enter the name" />
     </div>
     <div class="button-container">
+        <label for="name">Port:</label>
+        <input type="text" id="name" bind:value={inputData.name} placeholder="Enter TCP port" />
+    </div>
+    <div class="button-container">
         <label for="role">Type:</label>
         <select id="role" bind:value={inputData.type}>
             {#each types as type}
@@ -66,7 +70,7 @@
     <div class="button-container">
         <a href="#" class="select-button" on:click={()=> spawnInstanceRequest(inputData.type)}>Save</a>
         <a href="#" class="select-button" on:click={()=> handleClick()}>Cancel</a>
-        <a href="#" class="select-button" on:click={()=> autoInput()}>Auto Gen</a>
+        <!-- <a href="#" class="select-button" on:click={()=> autoInput()}>Auto Gen</a> -->
 
     </div>
 </form>

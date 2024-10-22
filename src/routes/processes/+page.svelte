@@ -58,7 +58,7 @@
 
             {#if showTreeConfig}
                 <main>
-                    <h1>Configure Tree Structure</h1>
+                    <h1>Configure Process Structure</h1>
                     <TreeView bind:this={childComponentRef} node={selectedPattern}/>
                     <button class="button" on:click={scheduleProcess}>Schedule Process</button>
                     <button class="button" on:click={()=> showTreeConfig=false}>Cancel Scheduling</button>

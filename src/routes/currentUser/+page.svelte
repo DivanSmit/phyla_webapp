@@ -40,7 +40,6 @@
     {/if}
 
 
-    <QrGenerator />
 </div>
 
 <style>

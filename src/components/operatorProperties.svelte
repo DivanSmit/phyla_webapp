@@ -97,18 +97,18 @@
             {/each}
         </select>
     </div>
-    <div class="button-container">
+    <!-- <div class="button-container">
         <label for="title">Lunch:</label>
         <select id="title" bind:value={inputData.lunchTime}>
             {#each times as time}
                 <option value={time}>{time}</option>
             {/each}
         </select>
-    </div>
+    </div> -->
     <div class="button-container">
         <a href="#" class="select-button" on:click={()=> spawnInstanceRequest(inputData.role)}>Save</a>
         <a href="#" class="select-button" on:click={()=> handleClick()}>Cancel</a>
-        <a href="#" class="select-button" on:click={()=> autoInput()}>Auto Gen</a>
+        <!-- <a href="#" class="select-button" on:click={()=> autoInput()}>Auto Gen</a> -->
 
     </div>
 </form>

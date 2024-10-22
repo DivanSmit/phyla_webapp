@@ -7,7 +7,7 @@
 
     let processStepData = {
         processType: '',
-        FSM: '',
+        FSM: 'contracting_exe_FSM',
         duration: 0,
         description: '',
         truAction:'None',
@@ -25,7 +25,7 @@
     let processStepType = "SPAWN_PS_INSTANCE";
     let response = {}
     let listOfCapabilities = []
-    let actions = ['None','Collect','Measure' , 'Store', 'Transform']
+    let actions = ['None','Move','Measure' , 'Store', 'Transform']
 
     const dispatch = createEventDispatcher();
 
@@ -72,10 +72,10 @@
             <label for="name">Process Step Name:</label>
             <input type="text" id="name" bind:value={processStepData.processType} placeholder="Enter process step name" />
         </div>
-        <div class="input-group">
+        <!-- <div class="input-group">
             <label for="FSM">FSM:</label>
             <input type="text" id="FSM" bind:value={processStepData.FSM} placeholder="Enter FSM" />
-        </div>
+        </div> -->
 
         <div class="input-group">
             <label for="duration">Typical Duration:</label>
